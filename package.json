@@ -1,0 +1,50 @@
+{
+  "name": "hookmark-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "pre-commit": "lint-staged",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "_lint": "eslint --config ./.eslintrc.js --ext js --ext jsx --ext tsx --ext ts",
+    "lint": "npm run _lint -- ./src/",
+    "lint:fix": "npm run _lint -- --fix ./src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@prisma/client": "^3.15.1",
+    "bcrypt": "^5.0.1",
+    "cheerio": "^1.0.0-rc.10",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.17.3",
+    "https-proxy-agent": "^5.0.0",
+    "husky": "^8.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.0.0",
+    "pretty": "^2.0.0",
+    "short-uuid": "^4.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.2",
+    "prettier": "^2.7.1",
+    "prisma": "^3.15.1"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "eslint"
+    ]
+  }
+}

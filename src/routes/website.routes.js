@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
     const { websites } = req.body;
     const toBeReturnedData = [];
     for (let i = 0; i < websites.length; i++) {
-      const alreadyExists = await prisma.website.findOne({
+      const alreadyExists = await prisma.webSite.findFirst({
         where: {
           url: websites[i].url,
         },
@@ -36,10 +36,13 @@ router.post('/', async (req, res) => {
           averageRating: aggregateRating._avg.ratings,
         });
       } else {
-        const website = await prisma.website.create({
+        const website = await prisma.webSite.create({
           data: {
             url: websites[i].url,
             key: websites[i].key,
+          },
+          include: {
+            comments: true,
           },
         });
         toBeReturnedData.push({
@@ -50,6 +53,7 @@ router.post('/', async (req, res) => {
     }
     res.status(200).json(toBeReturnedData);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });

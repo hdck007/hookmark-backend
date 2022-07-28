@@ -4,15 +4,19 @@ const express = require('express');
 const prisma = new PrismaClient();
 const router = express.Router();
 
-// GET highest liked comment
-router.get('/highest-liked', async (req, res) => {
+// GET highest liked comment for a website
+router.get('/highest-liked/:websiteId', async (req, res) => {
   try {
-    const highestLikedComment = await prisma.comment.findOne({
+    const { websiteId } = req.params;
+    const highestLikedComment = await prisma.comment.findMany({
+      where: {
+        websiteId,
+      },
       orderBy: {
         likesCount: 'desc',
       },
     });
-    res.status(200).json(highestLikedComment);
+    res.status(200).json(highestLikedComment[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -48,11 +52,12 @@ router.get('/:websiteId', async (req, res) => {
     const { websiteId } = req.params;
     const comments = await prisma.comment.findMany({
       where: {
-        websiteId,
+        websiteId: +websiteId,
       },
     });
     res.status(200).json(comments);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -61,10 +66,10 @@ router.get('/:websiteId', async (req, res) => {
 router.post('/:commentId/like', async (req, res) => {
   try {
     const { commentId } = req.params;
-    const alreadyLiked = await prisma.like.findOne({
+    const alreadyLiked = await prisma.like.findFirst({
       where: {
-        commentId,
-        userId: req.body.userId,
+        commentId: +commentId,
+        user: req.body.userId,
       },
     });
     if (alreadyLiked) {
@@ -73,17 +78,17 @@ router.post('/:commentId/like', async (req, res) => {
     }
     await prisma.like.create({
       data: {
-        userId: req.body.userId,
+        user: req.body.userId,
         comment: {
           connect: {
-            id: commentId,
+            id: +commentId,
           },
         },
       },
     });
     const comment = await prisma.comment.update({
       where: {
-        id: commentId,
+        id: +commentId,
       },
       data: {
         likesCount: {
@@ -93,6 +98,7 @@ router.post('/:commentId/like', async (req, res) => {
     });
     res.status(200).json(comment);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -100,11 +106,12 @@ router.post('/:commentId/like', async (req, res) => {
 // dislike a comment
 router.post('/:commentId/dislike', async (req, res) => {
   try {
-    const { commentId } = req.params;
-    const isLiked = await prisma.like.findOne({
+    let { commentId } = req.params;
+    commentId = +commentId;
+    const isLiked = await prisma.like.findFirst({
       where: {
         commentId,
-        userId: req.body.userId,
+        user: req.body.userId,
       },
     });
     if (!isLiked) {
@@ -114,7 +121,7 @@ router.post('/:commentId/dislike', async (req, res) => {
     await prisma.like.deleteMany({
       where: {
         commentId,
-        userId: req.body.userId,
+        user: req.body.userId,
       },
     });
     const comment = await prisma.comment.update({

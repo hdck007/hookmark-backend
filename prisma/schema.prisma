@@ -53,6 +53,15 @@ model Like{
 
 model Tag{
   id Int @id @default(autoincrement())
-  userId String @db.TinyText
+  user String @db.LongText
   websites WebSite[]
+}
+
+model Hookmark{
+  id Int @id @default(autoincrement())
+  title String @db.LongText
+  user String @db.LongText
+  attributeName String 
+  attributeValue String @db.LongText
+  baseuri String @db.LongText
 }

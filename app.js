@@ -5,12 +5,14 @@ const app = express();
 const port = 3000;
 const morgan = require('morgan');
 const commentRouter = require('./src/routes/comments.routes');
+const ratingRouter = require('./src/routes/ratings.routes');
 
 app.use(cors());
 
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use('/comment', commentRouter);
+app.use('/rating', ratingRouter);
 
 app.get('/', async (req, res) => {
   res.status(200).json({ msg: 'Hello' });

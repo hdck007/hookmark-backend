@@ -12,3 +12,47 @@ datasource db {
   shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
   referentialIntegrity = "prisma"
 }
+
+model WebSite{
+  id Int @id @default(autoincrement())
+  url String @unique @db.VarChar(255)
+  key String @db.LongText
+  comments Comment[]
+  ratings Rating[]
+  tags Tag[]
+}
+
+model Comment{
+  id Int @id @default(autoincrement())
+  data String @db.LongText
+  createdBy String @db.LongText
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  website WebSite @relation(fields: [websiteId], references: [id])
+  websiteId Int
+  likesCount Int
+  likes Like[]
+}
+
+model Rating{
+  id Int @id @default(autoincrement())
+  ratings Int
+  createdBy String @db.LongText
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  website WebSite @relation(fields: [websiteId], references: [id])
+  websiteId Int
+}
+
+model Like{
+  id Int @id @default(autoincrement())
+  user String @db.LongText
+  comment Comment @relation(fields: [commentId], references: [id])
+  commentId Int
+}
+
+model Tag{
+  id Int @id @default(autoincrement())
+  userId String @db.TinyText
+  websites WebSite[]
+}

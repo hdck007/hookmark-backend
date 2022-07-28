@@ -14,5 +14,7 @@ module.exports = {
     'no-tabs': 0,
     'consistent-return': 0,
     'no-await-in-loop': 0,
+    'no-underscore-dangle': 0,
+    'no-plusplus': 0,
   },
 };

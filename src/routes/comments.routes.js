@@ -7,7 +7,8 @@ const router = express.Router();
 // GET highest liked comment for a website
 router.get('/highest-liked/:websiteId', async (req, res) => {
   try {
-    const { websiteId } = req.params;
+    let { websiteId } = req.params;
+    websiteId = +websiteId;
     const highestLikedComment = await prisma.comment.findMany({
       where: {
         websiteId,
@@ -65,10 +66,11 @@ router.get('/:websiteId', async (req, res) => {
 // like a comment
 router.post('/:commentId/like', async (req, res) => {
   try {
-    const { commentId } = req.params;
+    let { commentId } = req.params;
+    commentId = +commentId;
     const alreadyLiked = await prisma.like.findFirst({
       where: {
-        commentId: +commentId,
+        commentId,
         user: req.body.userId,
       },
     });
@@ -81,14 +83,14 @@ router.post('/:commentId/like', async (req, res) => {
         user: req.body.userId,
         comment: {
           connect: {
-            id: +commentId,
+            id: commentId,
           },
         },
       },
     });
     const comment = await prisma.comment.update({
       where: {
-        id: +commentId,
+        id: commentId,
       },
       data: {
         likesCount: {

@@ -8,30 +8,38 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     const { websiteId, ratings, userId } = req.body;
-    const ratingToAdd = await prisma.rating.upsert({
+    let ratingToAdd = null;
+    const alreadyExists = await prisma.rating.findFirst({
       where: {
         websiteId,
-        userId,
+        createdBy: userId,
       },
-      update: {
+    });
+    if (alreadyExists) {
+      ratingToAdd = await prisma.rating.update({
+        where: {
+          id: alreadyExists.id,
+        },
         data: {
           ratings,
         },
-      },
-      create: {
+      });
+    } else {
+      ratingToAdd = await prisma.rating.create({
         data: {
-          createdBy: userId,
           ratings,
+          createdBy: userId,
           website: {
             connect: {
               id: websiteId,
             },
           },
         },
-      },
-    });
+      });
+    }
     res.status(201).json(ratingToAdd);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -39,7 +47,8 @@ router.post('/', async (req, res) => {
 // get average rating for a website
 router.get('/:websiteId', async (req, res) => {
   try {
-    const { websiteId } = req.params;
+    let { websiteId } = req.params;
+    websiteId = +websiteId;
     const aggregateRating = await prisma.rating.aggregate({
       _avg: {
         ratings: true,

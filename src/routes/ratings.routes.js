@@ -63,4 +63,22 @@ router.get('/:websiteId', async (req, res) => {
   }
 });
 
+// get my rating for the website
+router.post('/my/:websiteId', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    let { websiteId } = req.params;
+    websiteId = +websiteId;
+    const rating = await prisma.rating.findFirst({
+      where: {
+        websiteId,
+        createdBy: userId,
+      },
+    });
+    res.status(200).json(rating);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

@@ -48,14 +48,31 @@ router.post('/', async (req, res) => {
 });
 
 // get all comments for a website
-router.get('/:websiteId', async (req, res) => {
+router.post('/:websiteId', async (req, res) => {
   try {
+    const { userId } = req.body;
     const { websiteId } = req.params;
     const comments = await prisma.comment.findMany({
       where: {
         websiteId: +websiteId,
       },
+      orderBy: {
+        likesCount: 'desc',
+      },
     });
+    for (let i = 0; i < comments.length; i++) {
+      const isLiked = await prisma.like.findFirst({
+        where: {
+          user: userId,
+          commentId: comments[i].id,
+        },
+      });
+      if (isLiked) {
+        comments[i].isLiked = true;
+      } else {
+        comments[i].isLiked = false;
+      }
+    }
     res.status(200).json(comments);
   } catch (err) {
     console.error(err);

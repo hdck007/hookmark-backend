@@ -19,7 +19,6 @@ model WebSite{
   key String @db.LongText
   comments Comment[]
   ratings Rating[]
-  tags Tag[]
 }
 
 model Comment{

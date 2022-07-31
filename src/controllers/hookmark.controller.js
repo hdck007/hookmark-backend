@@ -12,7 +12,6 @@ const getUserHooks = async (req, res) => {
     });
     res.status(200).json(tags);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -38,7 +37,6 @@ const addHookMark = async (req, res) => {
     });
     res.status(201).json(newHookmark);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };

@@ -7,7 +7,6 @@ const morgan = require('morgan');
 const commentRouter = require('./src/routes/comments.routes');
 const ratingRouter = require('./src/routes/ratings.routes');
 const websiteEntityRouter = require('./src/routes/website.routes');
-const tagRouter = require('./src/routes/tags.routes');
 const hookmarkRouter = require('./src/routes/hookmark.routes');
 
 app.use(cors());
@@ -17,7 +16,6 @@ app.use(express.json());
 app.use('/comment', commentRouter);
 app.use('/rating', ratingRouter);
 app.use('/website', websiteEntityRouter);
-app.use('/tags', tagRouter);
 app.use('/hookmark', hookmarkRouter);
 
 app.get('/', async (req, res) => {

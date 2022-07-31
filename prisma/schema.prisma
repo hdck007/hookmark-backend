@@ -51,12 +51,6 @@ model Like{
   commentId Int
 }
 
-model Tag{
-  id Int @id @default(autoincrement())
-  user String @db.LongText
-  websites WebSite[]
-}
-
 model Hookmark{
   id Int @id @default(autoincrement())
   title String @db.LongText

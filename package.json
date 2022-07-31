@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "pre-commit": "lint-staged",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",

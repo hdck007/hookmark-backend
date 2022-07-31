@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 const getUserHooks = async (req, res) => {
   try {
     const { userId } = req.params;
-    const tags = await prisma.hookmark.findMany({
+    const hooks = await prisma.hookmark.findMany({
       where: {
         user: userId,
       },
     });
-    res.status(200).json(tags);
+    res.status(200).json(hooks);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

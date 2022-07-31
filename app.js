@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = 8000;
 const morgan = require('morgan');
 const commentRouter = require('./src/routes/comments.routes');
 const ratingRouter = require('./src/routes/ratings.routes');

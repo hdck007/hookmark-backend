@@ -47,5 +47,8 @@
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "eslint"
     ]
+  },
+  "engines": {
+    "node": "16.x"
   }
 }

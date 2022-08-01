@@ -2,7 +2,7 @@
 # Hookmark backend
 
 A REST API built with express that serves as a backend for the hookmark extension.
-For more details about the extension please refer [https://github.com/hdck007/hookmark](https://github.com/hdck007/hookmark)
+For **_Frontend of  the extension_** and other general details about the extension please refer [https://github.com/hdck007/hookmark](https://github.com/hdck007/hookmark)
 
 
 ## Run Locally

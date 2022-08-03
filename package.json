@@ -14,7 +14,7 @@
     "lint:fix": "npm run _lint -- --fix ./src/"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",

@@ -41,7 +41,28 @@ const addHookMark = async (req, res) => {
   }
 };
 
+const searchHookMark = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { query } = req.query;
+    const generatedQuery = query.split(' ').map((word) => {
+      if (word.length > 3) return { title: { contains: word } };
+      return null;
+    }).filter((word) => word !== null);
+    const hooks = await prisma.hookmark.findMany({
+      where: {
+        user: userId,
+        OR: generatedQuery,
+      },
+    });
+    res.status(200).json(hooks);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getUserHooks,
   addHookMark,
+  searchHookMark,
 };

@@ -5,10 +5,22 @@ const prisma = new PrismaClient();
 const getUserHooks = async (req, res) => {
   try {
     const { userId } = req.params;
+    const { pageNum, limit } = req.query;
+    if (pageNum && limit) {
+      const hooks = await prisma.hookmark.findMany({
+        where: {
+          user: userId,
+        },
+        skip: (pageNum - 1) * limit,
+        take: limit,
+      });
+      return res.status(200).json(hooks);
+    }
     const hooks = await prisma.hookmark.findMany({
       where: {
         user: userId,
       },
+      take: 10,
     });
     res.status(200).json(hooks);
   } catch (error) {

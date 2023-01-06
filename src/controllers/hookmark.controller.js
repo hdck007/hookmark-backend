@@ -11,8 +11,8 @@ const getUserHooks = async (req, res) => {
         where: {
           user: userId,
         },
-        skip: (pageNum - 1) * limit,
-        take: limit,
+        skip: (+pageNum - 1) * (+limit),
+        take: Number(limit),
       });
       return res.status(200).json(hooks);
     }

@@ -3,28 +3,26 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity", "fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
-  referentialIntegrity = "prisma"
 }
 
 model WebSite{
   id Int @id @default(autoincrement())
-  url String @unique @db.VarChar(255)
-  key String @db.LongText
+  url String @unique
+  key String
   comments Comment[]
   ratings Rating[]
 }
 
 model Comment{
   id Int @id @default(autoincrement())
-  data String @db.LongText
-  createdBy String @db.LongText
+  data String 
+  createdBy String 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   website WebSite @relation(fields: [websiteId], references: [id])
@@ -36,7 +34,7 @@ model Comment{
 model Rating{
   id Int @id @default(autoincrement())
   ratings Float
-  createdBy String @db.LongText
+  createdBy String 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   website WebSite @relation(fields: [websiteId], references: [id])
@@ -45,16 +43,16 @@ model Rating{
 
 model Like{
   id Int @id @default(autoincrement())
-  user String @db.LongText
+  user String 
   comment Comment @relation(fields: [commentId], references: [id])
   commentId Int
 }
 
 model Hookmark{
   id Int @id @default(autoincrement())
-  title String @db.LongText
-  user String @db.LongText
+  title String 
+  user String 
   attributeName String? 
-  attributeValue String? @db.LongText
-  baseuri String @db.LongText
+  attributeValue String? 
+  baseuri String 
 }
